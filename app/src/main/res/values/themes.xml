@@ -1,0 +1,14 @@
+<resources>
+    <style name="Base.Theme.ChatNio" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="statusTextColor">@color/black</item>
+        <item name="colorButtonNormal">@color/black</item>
+    </style>
+
+    <style name="Theme.ChatNio" parent="Base.Theme.ChatNio"/>
+    <style name="Theme.ChatNio.Splash" parent="Base.Theme.ChatNio">
+        <!-- 隐藏状态栏 -->
+        <item name="android:windowFullscreen">true</item>
+    </style>
+</resources>

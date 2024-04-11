@@ -1,0 +1,8 @@
+<resources>
+    <style name="Base.Theme.ChatNio" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@android:color/transparent</item>
+        <item name="statusTextColor">@color/white</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="colorButtonNormal">@color/white</item>
+    </style>
+</resources>
