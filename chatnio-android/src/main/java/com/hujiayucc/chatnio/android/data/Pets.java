@@ -1,6 +1,5 @@
 package com.hujiayucc.chatnio.android.data;
 
-import android.util.Log;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.hujiayucc.chatnio.android.bean.Package;
@@ -10,8 +9,6 @@ import com.hujiayucc.chatnio.android.exception.FieldException;
 import com.hujiayucc.chatnio.android.utils.GetClient;
 import com.hujiayucc.chatnio.android.utils.PostClient;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -35,10 +32,8 @@ public class Pets {
      * @throws AuthException 认证失败
      * @throws FieldException 字段异常
      */
-    public float getQuota() throws AuthException, FieldException, IOException {
-        GetClient quota;
-        quota = new GetClient("/quota", key);
-
+    public float getQuota() throws AuthException, FieldException {
+        GetClient quota = new GetClient("/quota", key);
         if (quota.statusCode() == 401) throw new AuthException("Unauthorized");
         if (quota.statusCode() == 200) {
             JSONObject quotaJson = JSON.parseObject(quota.body());

@@ -4,6 +4,8 @@ import com.hujiayucc.chatnio.android.bean.Models
 import com.hujiayucc.chatnio.android.data.Pets
 import com.hujiayucc.chatnio.android.data.Subscribe
 import com.hujiayucc.chatnio.android.data.Tasks
+import com.hujiayucc.chatnio.android.exception.FieldException
+import com.hujiayucc.chatnio.android.exception.InvalidException
 
 /**
  * ChatNio
@@ -13,12 +15,15 @@ class ChatNio {
     private val tasks: Tasks
     private val models: Models
     private val subscribe: Subscribe
+    val key: String
 
     /**
      * 创建ChatNio实例，官网默认API
      * @param key 密钥
      */
     constructor(key: String) {
+        if (!key.startsWith("sk-")) throw InvalidException("Invalid Key.")
+        this.key = key
         pets = Pets(key)
         tasks = Tasks(key)
         models = Models()
@@ -31,6 +36,8 @@ class ChatNio {
      * @param point API节点
      */
     constructor(key: String, point: String) {
+        if (!key.startsWith("sk-")) throw InvalidException("Invalid Key.")
+        this.key = key
         API = point
         pets = Pets(key)
         tasks = Tasks(key)

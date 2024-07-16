@@ -3,19 +3,21 @@ package com.hujiayucc.chatnio.android.utils;
 import com.alibaba.fastjson.JSONObject;
 import com.hujiayucc.chatnio.android.bean.MessageSegment;
 import com.hujiayucc.chatnio.android.bean.Token;
-import okhttp3.Response;
-import okhttp3.WebSocket;
-import okhttp3.WebSocketListener;
+import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Queue;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import static com.hujiayucc.chatnio.android.ChatNio.API;
+
 /**
  * 自定义WS监听器
  */
-public class CustomListener extends WebSocketListener {
+public class CustomListener extends WebSocketListener implements Listener {
+    /** WS */
+    protected WebSocket webSocket;
     /** messageStringBuilder */
     public final StringBuilder builder = new StringBuilder();
     /** ws */
@@ -31,17 +33,6 @@ public class CustomListener extends WebSocketListener {
         this.token = token;
     }
 
-    /**
-     * 开启连接
-     * @param webSocket ws
-     */
-    @Override
-    public void onOpen(WebSocket webSocket, @NotNull Response response) {
-        JSONObject body = new JSONObject().fluentPut("token", token.toString());
-        webSocket.send(body.toJSONString());
-        super.onOpen(webSocket, response);
-    }
-
     @Override
     public void onMessage(@NotNull WebSocket webSocket, @NotNull String data) {
         MessageSegment message = JSONObject.parseObject(data, MessageSegment.class);
@@ -52,7 +43,6 @@ public class CustomListener extends WebSocketListener {
             }
         }
         builder.append(message.message);
-        super.onMessage(webSocket, data);
     }
 
     @Override
@@ -63,6 +53,33 @@ public class CustomListener extends WebSocketListener {
                 future.completeExceptionally(throwable);
             }
         }
-        super.onFailure(webSocket, throwable, response);
     }
+
+    @Override
+    public CompletableFuture<MessageSegment> sendMessage(String message, String model, boolean enableWeb) {
+        final OkHttpClient client = new OkHttpClient.Builder().build();
+        webSocket = client.newWebSocket(new Request.Builder().url(getPath()).build(), this);
+        webSocket.send(token.toString());
+        String body = getBody(message, model, enableWeb);
+        CompletableFuture<MessageSegment> futureResponse = new CompletableFuture<>();
+        pendingMessages.add(futureResponse);
+        webSocket.send(body);
+        return futureResponse;
+    }
+
+    private String getPath() {
+        return API.replaceFirst("^http", "ws") + "/chat";
+    }
+
+    private String getBody(String message, String model, boolean enableWeb) {
+        return new JSONObject()
+                .fluentPut("type", "chat")
+                .fluentPut("model", model)
+                .fluentPut("message", message)
+                .fluentPut("web", enableWeb).toJSONString();
+    }
+}
+
+interface Listener {
+    CompletableFuture<MessageSegment> sendMessage(String message, String model, boolean enableWeb);
 }

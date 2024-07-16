@@ -18,7 +18,7 @@ class Token {
      * @param token JwT Token/API Key
      * @param id 对话ID， -1 为新对话
      */
-    constructor(token: String, id: Int) {
+    constructor(token: String, id: Int = Token.NewTaskId) {
         this.token = token
         this.id = id
     }

@@ -126,6 +126,6 @@ class Models {
              * 获取默认模型
              * @return 默认模型
              */
-            get() = "gpt-3.5-turbo-0613"
+            get() = "gpt-3.5-turbo-16k-0613"
     }
 }

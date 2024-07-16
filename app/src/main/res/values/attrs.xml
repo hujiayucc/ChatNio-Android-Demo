@@ -3,5 +3,6 @@
     <declare-styleable name="AppCompatTheme">
         <attr format="color" name="colorPrimary"/>
         <attr format="color" name="statusTextColor"/>
+        <attr format="color" name="backgroundTint"/>
     </declare-styleable>
 </resources>

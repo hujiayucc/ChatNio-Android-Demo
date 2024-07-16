@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">ChatNio</string>
     <string name="copyright">Copyright © 2024 hujiayucc - All rights reserved.</string>
+    <string name="please_input_chatnio_key">请输入你的 ChatNio 秘钥</string>
+    <string name="remember_key">记住秘钥</string>
+    <string name="done">确定</string>
 </resources>

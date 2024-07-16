@@ -51,7 +51,6 @@ public enum Role {
             case "user":
                 return USER;
             case "assistant":
-                return ASSISTANT;
             default:
                 return ASSISTANT;
         }
